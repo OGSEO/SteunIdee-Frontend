@@ -6,6 +6,7 @@ export default function Homepage() {
             <h1>Homepage</h1>
             <Link to='/ideas'>All Ideas</Link>
             <Link to='/ideas/new-idea'>Create an Idea</Link>
+            <Link to='/register'>Register</Link>
         </>
     )
 }
