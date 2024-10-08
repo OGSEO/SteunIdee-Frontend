@@ -7,6 +7,11 @@ import Register from "./pages/Register.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import Login from "./pages/Login.jsx";
 import {AuthProvider} from "./context/AuthContext.jsx";
+import AllUsers, {usersLoader} from "./users/AllUsers.jsx";
+import IdeaDetail, {ideaDetailLoader} from "./ideas/IdeaDetail.jsx";
+import UserDetail, {userDetailLoader} from "./users/UserDetail.jsx";
+import EditIdea from "./ideas/EditIdea.jsx";
+import PostAvatar from "./PostAvatar.jsx";
 
 const router = createBrowserRouter([
     {
@@ -17,6 +22,8 @@ const router = createBrowserRouter([
             { index: true, element: <Homepage /> },
             { path: 'register', element: <Register /> },
             { path: 'login', element: <Login /> },
+            // { path: 'post-avatar', element: <PostAvatar /> },
+
             {
                 path: 'ideas',
                 children: [
@@ -25,9 +32,38 @@ const router = createBrowserRouter([
                         element: <AllIdeas />,
                         loader: ideasLoader
                     },
-                    { path: 'new-idea', element: <CreateIdea /> }
+                    { path: 'new-idea', element: <CreateIdea /> },
+                    {
+                        path: ':ideaId',
+                        id: 'idea-detail',
+                        loader: ideaDetailLoader,
+                        children: [
+                            {
+                                index: true,
+                                element:<IdeaDetail />,
+                            },
+                            {
+                                path: 'edit',
+                                element: <EditIdea />,
+                            },
+                        ]
+                    },
+                ]
+            },
+
+            {
+                path: 'users',
+                children: [
+                    {
+                        index: true,
+                        element: <AllUsers />,
+                        loader: usersLoader
+                    },
+                    { path: ':userId', element: <UserDetail />, loader: userDetailLoader },
+                    { path: ':userId/avatar', element: <PostAvatar /> }
                 ]
             }
+
         ]
     }
 ]);

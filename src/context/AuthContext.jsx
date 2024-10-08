@@ -12,6 +12,7 @@ export function AuthProvider({children}) {
         user: null,
         status: 'pending',
     });
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -51,7 +52,7 @@ export function AuthProvider({children}) {
 
     async function fetchUserData(username, token, redirectUrl) {
         try {
-            const result = await axios.get(`http://localhost:8080/auth/user/${username}`, {
+            const result = await axios.get(`http://localhost:8080/user/username/${username}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
