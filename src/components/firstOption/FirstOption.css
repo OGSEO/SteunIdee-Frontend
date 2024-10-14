@@ -1,0 +1,12 @@
+.first-option-container {
+    background-color: lightblue;
+    width: 400px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+    gap: 16px;
+    border-radius: 8px;
+}

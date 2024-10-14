@@ -43,7 +43,7 @@ function PostAvatar() {
                 ...prevMessages,
                 avatar: {success: true, error: false}
             }));
-            navigate("/");
+            navigate("/ideas");
         } catch (e) {
             console.error(e);
             setMessages(prevMessages => ({

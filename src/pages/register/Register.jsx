@@ -1,20 +1,25 @@
 import {useForm} from "react-hook-form";
-import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
-import {useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {useState} from "react";
+import './Register.css';
+import ApiService from "../../service/ApiService.js";
 
 function Register() {
-    const [role, setRole ] = useState('');
+    // const [role, setRole] = useState('');
+    const params = useParams();
+    // const { role } = params;
+
+    const [message,setMessage] = useState(null);
 
     const {
         register,
         handleSubmit,
-        formState: { errors},
-    } =useForm({
+        formState: {errors},
+    } = useForm({
         defaultValues: {
-            username: '',
+            name: '',
             email: '',
-            password: '',
+            password: ''
         },
         mode: "onTouched",
     });
@@ -22,48 +27,52 @@ function Register() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setRole("ROLE_USER");
-    }, []);
+    // useEffect(() => {
+    //     if (params.role === 'politici') {
+    //         setRole("admin");
+    //     }
+    // }, []);
 
     const OnRegistrationHandler = async (data) => {
         setLoading(true);
         console.log(data);
 
-        const {username, email, password} = data;
+        const {name, email, password} = data;
         const sendData = {
-            username,
+            name,
             email,
             password,
-            role: [role]
+            // role: [sendRole]
         };
 
-        console.log(sendData);
-
         try {
-            const response = await axios.post('http://localhost:8080/auth/register', sendData )
-            const resData = await response.data;
+            const response = await ApiService.registerUser(sendData)
             console.log(response);
-            console.log(resData);
-            navigate("/login");
+            setMessage("User Successfully Registered")
+            setTimeout(() => {
+
+                navigate("/login");
+            }, 2000)
         } catch
             (error) {
             console.log(error);
+            setMessage("Unable to Register")
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <>
+        <div className="register-container">
             <h1>Registreren</h1>
+            {message && <p>{message}</p>}
             <form onSubmit={handleSubmit(OnRegistrationHandler)}>
                 <div>
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="name">Name</label>
                     <input
                         type="text"
-                        id="username"
-                        {...register('username')}
+                        id="name"
+                        {...register('name')}
                     />
                 </div>
                 <div>
@@ -86,7 +95,7 @@ function Register() {
             </form>
 
             <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>
-        </>
+        </div>
     )
 }
 

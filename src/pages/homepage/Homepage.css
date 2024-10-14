@@ -1,0 +1,7 @@
+.landing-page {
+    height: 100%;
+    /*background-color: red;*/
+    display: flex;
+    align-items: center;
+    gap: 32px
+}

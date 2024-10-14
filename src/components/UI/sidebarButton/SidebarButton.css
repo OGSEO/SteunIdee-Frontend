@@ -1,0 +1,15 @@
+.sidebar-btn {
+    background-color: #FFF;
+    text-decoration: none;
+    padding: 12px;
+    width: 100%;
+}
+
+.btn-icon {
+
+}
+
+.btn-label {
+    font-size: 18px;
+    font-weight: 500;
+}

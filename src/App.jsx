@@ -1,35 +1,38 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Homepage from "./pages/Homepage.jsx";
-import CreateIdea from "./ideas/CreateIdea.jsx";
-import AllIdeas, {ideasLoader} from "./ideas/AllIdeas.jsx";
-import RootLayout from "./layout/RootLayout.jsx";
-import Register from "./pages/Register.jsx";
+import Homepage from "./pages/homepage/Homepage.jsx";
+import CreateIdea from "./ideas/createIdea/CreateIdea.jsx";
+import IdeaList, {ideasLoader} from "./ideas/ideaList/IdeaList.jsx";
+import RootLayout from "./layout/rootLayout/RootLayout.jsx";
+import Register from "./pages/register/Register.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import Login from "./pages/Login.jsx";
-import {AuthProvider} from "./context/AuthContext.jsx";
-import AllUsers, {usersLoader} from "./users/AllUsers.jsx";
-import IdeaDetail, {ideaDetailLoader} from "./ideas/IdeaDetail.jsx";
-import UserDetail, {userDetailLoader} from "./users/UserDetail.jsx";
-import EditIdea from "./ideas/EditIdea.jsx";
-import PostAvatar from "./PostAvatar.jsx";
+// import AllUsers, {usersLoader} from "./users/AllUsers.jsx";
+import IdeaDetail, {ideaDetailLoader} from "./ideas/ideaDetail/IdeaDetail.jsx";
+// import UserDetail, {userDetailLoader} from "./users/UserDetail.jsx";
+import EditIdea from "./ideas/editIdea/EditIdea.jsx";
+// import PostAvatar from "./PostAvatar.jsx";
+import UserLayout from "./layout/userLayout/UserLayout.jsx";
+import ProfilePage from "./pages/profilePage/ProfilePage.jsx";
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <AuthProvider><RootLayout /></AuthProvider>,
+        // element: <AuthProvider><RootLayout /></AuthProvider>,
+        element: <RootLayout />,
         errorElement: <ErrorPage />,
         children : [
             { index: true, element: <Homepage /> },
-            { path: 'register', element: <Register /> },
+            // { path: 'register', element: <Register /> },
+            { path: 'register/:role', element: <Register />},
             { path: 'login', element: <Login /> },
-            // { path: 'post-avatar', element: <PostAvatar /> },
-
+            { path: 'profile', element: <ProfilePage /> },
             {
                 path: 'ideas',
+                element: <UserLayout />,
                 children: [
                     {
                         index: true,
-                        element: <AllIdeas />,
+                        element: <IdeaList />,
                         loader: ideasLoader
                     },
                     { path: 'new-idea', element: <CreateIdea /> },
@@ -51,18 +54,18 @@ const router = createBrowserRouter([
                 ]
             },
 
-            {
-                path: 'users',
-                children: [
-                    {
-                        index: true,
-                        element: <AllUsers />,
-                        loader: usersLoader
-                    },
-                    { path: ':userId', element: <UserDetail />, loader: userDetailLoader },
-                    { path: ':userId/avatar', element: <PostAvatar /> }
-                ]
-            }
+            // {
+            //     path: 'users',
+            //     children: [
+            //         {
+            //             index: true,
+            //             element: <AllUsers />,
+            //             loader: usersLoader
+            //         },
+            //         { path: ':userId', element: <UserDetail />, loader: userDetailLoader },
+            //         { path: ':userId/avatar', element: <PostAvatar /> }
+            //     ]
+            // }
 
         ]
     }

@@ -1,0 +1,9 @@
+.idea-detail-container {
+    /*background-color: bisque;*/
+    /*height: calc(100vh - 32px);*/
+    display: flex;
+    flex-direction: column;
+    /*gap: 16px;*/
+    /*padding: 16px;*/
+    border-radius: 8px;
+}

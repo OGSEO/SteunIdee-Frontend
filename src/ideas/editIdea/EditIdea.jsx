@@ -1,15 +1,18 @@
 import {useForm} from "react-hook-form";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import {Link, useNavigate, useParams, useRouteLoaderData} from "react-router-dom";
+import './EditIdea.css';
+import ApiService from "../../service/ApiService.js";
 
-export default function CreateIdea() {
+export default function EditIdea() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { ideaId} = useParams();
+    const idea = useRouteLoaderData('idea-detail');
 
     const {register, handleSubmit} = useForm({
             defaultValues: {
-                title: '',
+                title: `${idea.title}`,
                 description: ''
             },
             mode: "onTouched",
@@ -18,9 +21,9 @@ export default function CreateIdea() {
 
     async function onSubmit(data) {
         setIsLoading(true);
+        console.log(ideaId)
         try {
-            const response = await axios.post("http://localhost:8080/idea",
-                data);
+            const response = await ApiService.updateIdea(ideaId, data)
             console.log(response.data);
             if(response.data) {
                 navigate('/ideas');
@@ -34,8 +37,8 @@ export default function CreateIdea() {
 
 
     return (
-        <>
-            <h1>Create Idea</h1>
+        <div className='edit-idea-container'>
+            <h1>Edit Idea</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="title">Title</label>
@@ -53,10 +56,11 @@ export default function CreateIdea() {
                         {...register('description')}
                     />
                 </div>
-                <button>{isLoading ? "Submitting..." : "Create Idea"}</button>
+                <div className='buttons-box'>
+                    <Link to="..">Cancel</Link>
+                    <button>{isLoading ? "Submitting..." : "Edit Idea"}</button>
+                </div>
             </form>
-
-
-        </>
+        </div>
     )
 }

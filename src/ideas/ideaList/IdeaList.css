@@ -1,0 +1,15 @@
+.idea-list-container {
+    /*background-color: bisque;*/
+    display: flex;
+    flex-direction: column;
+    /*gap: 16px;*/
+    /*padding: 16px;*/
+    border-radius: 8px;
+}
+
+.idea-list-container ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

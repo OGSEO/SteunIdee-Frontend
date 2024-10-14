@@ -1,0 +1,9 @@
+.user-main-page {
+    /*background-color: lightblue;*/
+    display: flex;
+    gap:16px;
+}
+
+.main-content {
+    width: 500px;
+}
