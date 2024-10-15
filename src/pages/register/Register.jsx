@@ -3,13 +3,14 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useState} from "react";
 import './Register.css';
 import ApiService from "../../service/ApiService.js";
+import {TextField} from "../../components/controls/textField/TextField.jsx";
 
 function Register() {
     // const [role, setRole] = useState('');
     const params = useParams();
     // const { role } = params;
 
-    const [message,setMessage] = useState(null);
+    const [message, setMessage] = useState(null);
 
     const {
         register,
@@ -21,7 +22,8 @@ function Register() {
             email: '',
             password: ''
         },
-        mode: "onTouched",
+        mode: "onSubmit",
+        reValidateMode: "onSubmit"
     });
 
     const [loading, setLoading] = useState(false);
@@ -33,7 +35,7 @@ function Register() {
     //     }
     // }, []);
 
-    const OnRegistrationHandler = async (data) => {
+    const onSubmit = async (data) => {
         setLoading(true);
         console.log(data);
 
@@ -62,35 +64,50 @@ function Register() {
         }
     }
 
+    const onError = async (err) => {
+        console.log(err);
+    }
+
     return (
         <div className="register-container">
             <h1>Registreren</h1>
             {message && <p>{message}</p>}
-            <form onSubmit={handleSubmit(OnRegistrationHandler)}>
-                <div>
-                    <label htmlFor="name">Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        {...register('name')}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        {...register('email')}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        {...register('password')}
-                    />
-                </div>
+            <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit, onError)}>
+                <TextField
+                    label="Name"
+                    {...register('name', {
+                        minLength: {
+                            value: 6,
+                            message: "Must be min 6 characters"
+                        },
+                        maxLength: {
+                            value: 20,
+                            message: "Must be max 20 characters"
+                        },
+                        required: "This field is required."
+                    })}
+                    error={errors.name}
+                />
+                <TextField
+                    type="email"
+                    label="Email"
+                    {...register('email', {
+                        required: "This field is required.",
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Incorrect email format.",
+                        }
+                    })}
+                    error={errors.email}
+                />
+                <TextField
+                    type="password"
+                    label="Password"
+                    {...register('password', {
+                        required: "This field is required."
+                    })}
+                    error={errors.password}
+                />
                 <button>{loading ? "Submitting..." : "Registreren"}</button>
             </form>
 

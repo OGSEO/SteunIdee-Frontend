@@ -13,6 +13,8 @@ import EditIdea from "./ideas/editIdea/EditIdea.jsx";
 // import PostAvatar from "./PostAvatar.jsx";
 import UserLayout from "./layout/userLayout/UserLayout.jsx";
 import ProfilePage from "./pages/profilePage/ProfilePage.jsx";
+import AddressPage from "./pages/addressPage/AddressPage.jsx";
+import {ProtectedRoute} from "./service/Guard.jsx";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +28,9 @@ const router = createBrowserRouter([
             { path: 'register/:role', element: <Register />},
             { path: 'login', element: <Login /> },
             { path: 'profile', element: <ProfilePage /> },
+            // { path: 'profile', element: <ProtectedRoute element: {<ProfilePage />} /> },
+            { path: 'add-address', element: <AddressPage /> },
+            { path: 'edit-address', element: <AddressPage /> },
             {
                 path: 'ideas',
                 element: <UserLayout />,

@@ -30,7 +30,7 @@ export default function CreateIdea() {
         try {
             const response = await ApiService.createIdea(data)
             console.log(response);
-            if (response.statusCode == 200) {
+            if (response.statusCode === 200) {
                 navigate('/ideas');
             }
         } catch (error) {
