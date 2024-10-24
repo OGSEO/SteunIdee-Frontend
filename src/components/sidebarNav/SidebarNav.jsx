@@ -1,11 +1,14 @@
 import './SidebarNav.css';
-// import {useAuth} from "../../context/AuthContext.jsx";
-// import {Link} from "react-router-dom";
 import SidebarButton from "../UI/sidebarButton/SidebarButton.jsx";
 import SidebarCTA from "../UI/sidebarCTA/SidebarCTA.jsx";
-// import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import ApiService from "../../service/ApiService.js";
+import { BsHouse } from "react-icons/bs";
 
 export default function SidebarNav() {
+    const navigate = useNavigate();
+
+    const isAuthenticated = ApiService.isAutheticated();
     // const auth = useAuth();
     // console.log(auth);
     // const [avatarUrl, setAvatarUrl] = useState("");
@@ -17,6 +20,16 @@ export default function SidebarNav() {
     //         setAvatarUrl(`http://localhost:8080/user/${auth.user.id}/avatar`)
     //     }
     // }, [avatarUrl]);
+
+    const handleLogout = () => {
+        const confirm = window.confirm("Are you sure you want to logout?");
+        if(confirm) {
+            ApiService.logout();
+            setTimeout(() => {
+                navigate('/login')
+            }, 500);
+        }
+    }
 
     return (
         <div className="sidebar-nav-container">
@@ -34,10 +47,12 @@ export default function SidebarNav() {
                 </div>
             </div>
             <SidebarCTA linkto='new-idea'>Ik heb een idee</SidebarCTA>
-            <SidebarButton linkto='/ideas'>Home</SidebarButton>
-            <SidebarButton>Mijn ideeen</SidebarButton>
+            <SidebarButton linkto='/ideas' icon={<BsHouse />}>Home</SidebarButton>
+            <SidebarButton linkto='/profile'>My Account</SidebarButton>
+            <SidebarButton linkto='/ideas/user/1'>Mijn ideeen</SidebarButton>
             <SidebarButton>Steun ideeen</SidebarButton>
             <SidebarButton logout>Uitloggen</SidebarButton>
+            {isAuthenticated && <SidebarButton onClick={handleLogout}>Logout</SidebarButton>}
         </div>
     )
 }

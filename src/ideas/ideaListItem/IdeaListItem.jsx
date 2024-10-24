@@ -1,13 +1,57 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import './IdeaListItem.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CreateComment from "../../comments/createComment/CreateComment.jsx";
+import ApiService from "../../service/ApiService.js";
+import CommentList from "../../comments/commentList/CommentList.jsx";
+import ErrorPage from "../../pages/ErrorPage.jsx";
+import LikeBox from "../../components/likeBox/LikeBox.jsx";
+import PostActionButton from "../../components/UI/postActionButton/PostActionButton.jsx";
+import {BsChatRightText} from "react-icons/bs";
 
 export default function IdeaListItem({idea}) {
     const [isCommenting, setIsCommenting] = useState(false);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [comments, setComments] = useState([]);
+
+    // const navigate = useNavigate();
+
+    useEffect(() => {
+
+        async function fetchComments() {
+            setIsLoading(true);
+            try {
+                console.log(idea.id);
+                const response = await ApiService.getAllComments(idea.id);
+                console.log(response);
+                if (response.statusCode !== 200) {
+                    throw new Error("Failed fetching commentos!");
+                }
+                if (response.statusCode === 200) {
+                    setComments(response.commentList)
+                }
+
+
+            } catch (error) {
+                setError({
+                    message: error.message || "Could not FETCH comments!!!"
+                })
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchComments();
+    }, [idea.id]);
+
+
+    // if (error) {
+    //     return <ErrorPage/>
+    // }
 
     function commentHandler() {
-        setIsCommenting(true);
+        setIsCommenting(!isCommenting);
     }
 
     return (
@@ -15,7 +59,7 @@ export default function IdeaListItem({idea}) {
             <article>
                 <div className='user-date-box'>
                     <div className='username'>
-                        username
+                        {idea.user.name}
                     </div>
                     <div className='date'>
                         Geplaatst op: {idea.createdAt}
@@ -27,17 +71,24 @@ export default function IdeaListItem({idea}) {
                     </div>
                     <div className='idea-description'>
                         {idea.description}
+                        <Link className="more-link" to={`${idea.id}`}> <span>   ...meer</span></Link>
+                    </div>
+                    <div className="like-comment-box">
+                        <div className="like-box">likes: {idea.userLikes.length}</div>
+                        <div className="comment-box">comments: {comments.length}</div>
                     </div>
                     <div className='cta-box'>
-                        <div>Like</div>
+                        <div>
+                            <LikeBox idea={idea}/>
+                        </div>
                         <div>Steun</div>
                         <div>
-                            <button type='button' onClick={commentHandler}>
-                                Make a comment
-                            </button>
+                            <PostActionButton label="Commentaar" clickEvent={commentHandler} icon={<BsChatRightText/>}/>
                         </div>
                     </div>
-                    {isCommenting && <CreateComment/>}
+                    {isCommenting && <CreateComment idea={idea}/>}
+                    <CommentList comments={comments}/>
+
                 </div>
             </article>
         </li>

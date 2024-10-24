@@ -10,8 +10,6 @@ function Register() {
     const params = useParams();
     // const { role } = params;
 
-    const [message, setMessage] = useState(null);
-
     const {
         register,
         handleSubmit,
@@ -50,15 +48,10 @@ function Register() {
         try {
             const response = await ApiService.registerUser(sendData)
             console.log(response);
-            setMessage("User Successfully Registered")
-            setTimeout(() => {
-
                 navigate("/login");
-            }, 2000)
         } catch
             (error) {
             console.log(error);
-            setMessage("Unable to Register")
         } finally {
             setLoading(false);
         }
@@ -70,11 +63,11 @@ function Register() {
 
     return (
         <div className="register-container">
-            <h1>Registreren</h1>
-            {message && <p>{message}</p>}
+            <h2>Registreren</h2>
             <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit, onError)}>
                 <TextField
                     label="Name"
+                    error={errors.name}
                     {...register('name', {
                         minLength: {
                             value: 6,
@@ -86,11 +79,11 @@ function Register() {
                         },
                         required: "This field is required."
                     })}
-                    error={errors.name}
                 />
                 <TextField
                     type="email"
                     label="Email"
+                    error={errors.email}
                     {...register('email', {
                         required: "This field is required.",
                         pattern: {
@@ -98,20 +91,20 @@ function Register() {
                             message: "Incorrect email format.",
                         }
                     })}
-                    error={errors.email}
                 />
                 <TextField
                     type="password"
                     label="Password"
+                    error={errors.password}
                     {...register('password', {
                         required: "This field is required."
                     })}
-                    error={errors.password}
                 />
-                <button>{loading ? "Submitting..." : "Registreren"}</button>
+                <div className="register-link">
+                    <button className="btn">{loading ? "Submitting..." : "Registreren"}</button>
+                    <small><Link className="btn-link" to="/login">Heb je al een account?</Link></small>
+                </div>
             </form>
-
-            <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>
         </div>
     )
 }

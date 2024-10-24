@@ -4,7 +4,7 @@ h2 {
     margin-bottom: 32px;
 }
 
-.register-container {
+.login-container {
     align-self: center;
     background: #FFF;
     padding: 20px;
@@ -36,13 +36,4 @@ h2 {
 
 .btn:hover {
     background: darkred;
-}
-
-.btn-link {
-    text-decoration: none;
-    color: lightcoral;
-}
-
-.btn-link:hover {
-    text-decoration: underline;
 }

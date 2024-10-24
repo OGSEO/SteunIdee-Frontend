@@ -5,7 +5,7 @@ import IdeaList, {ideasLoader} from "./ideas/ideaList/IdeaList.jsx";
 import RootLayout from "./layout/rootLayout/RootLayout.jsx";
 import Register from "./pages/register/Register.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
-import Login from "./pages/Login.jsx";
+import Login from "./pages/login/Login.jsx";
 // import AllUsers, {usersLoader} from "./users/AllUsers.jsx";
 import IdeaDetail, {ideaDetailLoader} from "./ideas/ideaDetail/IdeaDetail.jsx";
 // import UserDetail, {userDetailLoader} from "./users/UserDetail.jsx";
@@ -15,6 +15,7 @@ import UserLayout from "./layout/userLayout/UserLayout.jsx";
 import ProfilePage from "./pages/profilePage/ProfilePage.jsx";
 import AddressPage from "./pages/addressPage/AddressPage.jsx";
 import {ProtectedRoute} from "./service/Guard.jsx";
+import UserIdeaList, {userIdeasLoader} from "./ideas/UserIdeaList.jsx";
 
 const router = createBrowserRouter([
     {
@@ -55,6 +56,11 @@ const router = createBrowserRouter([
                                 element: <EditIdea />,
                             },
                         ]
+                    },
+                    {
+                        path: 'user/:userId',
+                        loader: userIdeasLoader,
+                        element: <UserIdeaList />
                     },
                 ]
             },

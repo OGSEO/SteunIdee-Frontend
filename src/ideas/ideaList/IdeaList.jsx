@@ -23,7 +23,7 @@ export default function IdeaList() {
 
 export async function ideasLoader() {
     const response = await ApiService.getAllIdeas();
-    console.log(response);
+    // console.log(response);
 
     if(response.statusCode !== 200) {
         throw {message: "Kon niet fetchen MyG"};

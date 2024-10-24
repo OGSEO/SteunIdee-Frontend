@@ -4,13 +4,14 @@ import {Link, useNavigate} from "react-router-dom";
 import './CreateIdea.css';
 // import {useAuth} from "../../context/AuthContext.jsx";
 import ApiService from "../../service/ApiService.js";
+import {TextField} from "../../components/controls/textField/TextField.jsx";
 
 export default function CreateIdea() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     // const auth = useAuth();
 
-    const {register, handleSubmit} = useForm({
+    const {register, handleSubmit, formState: {errors}} = useForm({
             defaultValues: {
                 title: '',
                 description: ''
@@ -21,12 +22,6 @@ export default function CreateIdea() {
 
     async function onSubmit(data) {
         setIsLoading(true);
-        // const {title, description} = data;
-        // const sendData = {
-        //     username: auth.user.username,
-        //     title,
-        //     description,
-        // };
         try {
             const response = await ApiService.createIdea(data)
             console.log(response);
@@ -46,22 +41,20 @@ export default function CreateIdea() {
             <h1>Create Idea</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <div>
-                        <label htmlFor="title">Title</label>
-                        <input
-                            type="text"
-                            id="title"
-                            {...register('title')}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="description">Description</label>
-                        <input
-                            type="text"
-                            id="description"
-                            {...register('description')}
-                        />
-                    </div>
+                    <TextField
+                        label="Title"
+                        error={errors.title}
+                        {...register('title', {
+                            required: "This field is required."
+                        })}
+                    />
+                    <TextField
+                        label="Description"
+                        error={errors.description}
+                        {...register('description', {
+                            required: "This field is required."
+                        })}
+                    />
                 </div>
 
                 <div className='buttons-box'>

@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 // import {useAuth} from "../../context/AuthContext.jsx";
 import ApiService from "../../service/ApiService.js";
 
-export default function CreateComment() {
+export default function CreateComment( {idea}) {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     // const auth = useAuth();
@@ -19,22 +19,34 @@ export default function CreateComment() {
 
     async function onSubmit(data) {
         setIsLoading(true);
-        // const {content} = data;
-        // const sendData = {
-        //     username: auth.user.username,
-        //     content
-        // };
+        // const user = await ApiService.getLoggedUser();
+
+        // const { content } = data;
+        //
+        // const newData = {
+        //     content: content,
+        //     tempUserId: user.user.email
+        // }
+
+        console.log(data);
         try {
-            const response = await ApiService.createComment(data)
-            console.log(response.data);
-            if (response.data) {
-                navigate('.');
+            const { content } = data;
+
+            const newData = {
+                content,
+                name: idea.user.name,
+                ideaId: idea.id
             }
+            console.log(newData);
+            const response = await ApiService.createComment(newData)
+            console.log(response);
+            navigate("/ideas");
         } catch (error) {
-            console.error("Error submitting comment", error);
+            console.error("Error submitting comment", error.response.data);
         } finally {
             setIsLoading(false);
         }
+
     }
 
     return (

@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import ApiService from "../../service/ApiService.js";
 import {useForm} from "react-hook-form";
+import {TextField} from "../../components/controls/textField/TextField.jsx";
 
 export default function AddressPage() {
 
@@ -18,7 +19,10 @@ export default function AddressPage() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const {register, handleSubmit} = useForm({
+    const {
+        register, handleSubmit,
+        formState: {errors},
+    } = useForm({
             defaultValues: {
                 street: `${address.street}`,
                 zipCode: `${address.zipCode}`,
@@ -36,7 +40,7 @@ export default function AddressPage() {
         }
     }, [location.pathname])
 
-    const fetchUserInfo = async() => {
+    const fetchUserInfo = async () => {
         try {
             const response = await ApiService.getLoggedUser();
             console.log(response);
@@ -65,47 +69,46 @@ export default function AddressPage() {
     }
 
     return (
-            <div className='address-page'>
-                <h2>{location.pathname === '/edit-address' ? 'Edit Address' : 'Add Address'}</h2>
-                {error && <p className="error-message">{error}</p>}
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <div>
-                            <label>Street</label>
-                            <input
-                                type="text"
-                                {...register('street')}
-                            />
-                        </div>
-                        <div>
-                            <label>ZipCode</label>
-                            <input
-                                type="text"
-                                disabled
-                                {...register('zipCode')}
-                            />
-                        </div>
-                        <div>
-                            <label>City</label>
-                            <input
-                                type="text"
-                                {...register('city')}
-                            />
-                        </div>
-                        <div>
-                            <label>Country</label>
-                            <input
-                                type="text"
-                                {...register('country')}
-                            />
-                        </div>
-                    </div>
+        <div className='address-page'>
+            <h2>{location.pathname === '/edit-address' ? 'Edit Address' : 'Add Address'}</h2>
+            {error && <p className="error-message">{error}</p>}
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                    <TextField
+                        label="Street"
+                        error={errors.street}
+                        {...register('street', {
+                            required: "This field is required."
+                        })}
+                    />
+                    <TextField
+                        label="ZipCode"
+                        error={errors.zipCode}
+                        {...register('zipCode', {
+                            required: "This field is required."
+                        })}
+                    />
+                    <TextField
+                        label="City"
+                        error={errors.city}
+                        {...register('city', {
+                            required: "This field is required."
+                        })}
+                    />
+                    <TextField
+                        label="Country"
+                        error={errors.country}
+                        {...register('country', {
+                            required: "This field is required."
+                        })}
+                    />
+                </div>
 
-                    <div className='buttons-box'>
-                        <Link to="..">Cancel</Link>
-                        <button>{isLoading ? "Submitting..." : "Save Address"}</button>
-                    </div>
-                </form>
-            </div>
+                <div className='buttons-box'>
+                    <Link to="..">Cancel</Link>
+                    <button>{isLoading ? "Submitting..." : "Save Address"}</button>
+                </div>
+            </form>
+        </div>
     )
 }

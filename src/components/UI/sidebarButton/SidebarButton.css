@@ -1,12 +1,19 @@
 .sidebar-btn {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
     background-color: #FFF;
     text-decoration: none;
     padding: 12px;
     width: 100%;
 }
 
-.btn-icon {
+.sidebar-btn:hover {
+    background-color: #cccccc;
+}
 
+.btn-icon {
 }
 
 .btn-label {

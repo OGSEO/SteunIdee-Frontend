@@ -1,17 +1,19 @@
 import './TextField.css';
 import {forwardRef} from "react";
 
-export const TextField = forwardRef(({type="text",
-                                         className="",
+export const TextField = forwardRef(({
+                                         type = "text",
+                                         className = "",
                                          label,
-                                        error,
-                                         ...other}, ref) => {
+                                         error,
+                                         ...other
+                                     }, ref) => {
     return (
-        <div>
-            <label>{label}</label>
+        <div className="form__control">
             <input
                 type={type}
                 className={`form-control ${className}`}
+                placeholder={label}
                 ref={ref}
                 {...other}
             />

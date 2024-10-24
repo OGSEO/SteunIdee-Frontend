@@ -24,8 +24,8 @@ export default function EditIdea() {
         console.log(ideaId)
         try {
             const response = await ApiService.updateIdea(ideaId, data)
-            console.log(response.data);
-            if(response.data) {
+            console.log(response);
+            if(response.statusCode === 200) {
                 navigate('/ideas');
             }
         }catch (error) {

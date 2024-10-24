@@ -9,7 +9,6 @@ export default function IdeaDetail() {
 
     return (
         <div className="idea-detail-container">
-            <h1>Idea Details</h1>
             {/*<p>{params.ideaId}</p>*/}
             <IdeaDetailItem/>
         </div>
@@ -22,9 +21,9 @@ export async function ideaDetailLoader( {params}) {
     const response = await ApiService.getIdeaById(ideaId);
     console.log(response);
 
-    if(response.status !== 200) {
+    if(response.statusCode !== 200) {
         throw {message: "Kon niet fetchen MyG"};
     } else {
-        return response.data;
+        return response.idea;
     }
 }
